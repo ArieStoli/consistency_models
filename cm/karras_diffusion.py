@@ -379,6 +379,7 @@ def karras_sample(
         sigmas = get_sigmas_karras(steps, sigma_min, sigma_max, rho, device=device)
 
     x_T = generator.randn(*shape, device=device) * sigma_max
+    # TODO: extract x_T
 
     sample_fn = {
         "heun": sample_heun,
@@ -402,6 +403,7 @@ def karras_sample(
         sampler_args = {}
 
     def denoiser(x_t, sigma):
+        # TODO: extract x_T-1
         _, denoised = diffusion.denoise(model, x_t, sigma, **model_kwargs)
         if clip_denoised:
             denoised = denoised.clamp(-1, 1)
@@ -416,6 +418,7 @@ def karras_sample(
         callback=callback,
         **sampler_args,
     )
+    # TODO: extract x_0
     return x_0.clamp(-1, 1)
 
 
